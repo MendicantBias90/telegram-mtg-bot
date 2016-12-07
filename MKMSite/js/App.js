@@ -8,45 +8,49 @@ export default class App extends Component {
         super(props);
 
         this.state = {
-            cercato: false,
+            searched: false,
+            found: false,
             lastSearch: '',
-            cards: []
+            cards: [],
         };
     }
 
     onSearch(string) {
-        this.setState({cards: [
-            {
-                nome: 'carta1',
-                prezzoMinimo: '€13.00',
-                prezzoMedio: '€ 18.00'
-            }
-        ]});
-        fetch('http://localhost:3001/?q=' + string)
-        .then(response => {
-            console.log('hello');
-            //return { cards: [0, 1, 2]};
-            return response.json();
-        })
-        .catch((e) => console.log(e))
-        .then(data => {
-            this.setState({cards: data});
+        this.setState({
+            lastSearch: string,
         });
-        //
-        // return;
-        //
-        if(string) {
-            this.setState({
-                cercato: true,
-                lastSearch: string,
+
+        var promises = string.split(',').map(el => {
+            return fetch(`http://localhost:3002/price?name=${el.trim()}`)
+                .then(response => {
+                    return response.json();
+                });
+        });
+
+        Promise.all(promises)
+        .then(res => {
+            return res.reduce((a, b) => {
+                return a.concat(b);
             });
-        } else {
-            this.setState(
-                {
-                    cercato: false,
-                }
-            );
-        }
+        })
+        .then(data => {
+            console.log('Data');
+            console.log(data);
+
+            this.setState({
+                cards: data,
+                found: true,
+                searched: !data.message,
+            });
+        })
+        .catch((e) => {
+            console.log('Yep, an error occourred');
+            console.log(e);
+            this.setState({
+                found: false,
+                searched: true,
+            });
+        });
     }
 
     render() {
@@ -58,10 +62,12 @@ export default class App extends Component {
                 </div>
                 <Requestform
                     onSearch={(stringa) => this.onSearch(stringa)}
-                    lastSearch={this.state.lastSearch} />
+                    lastSearch={this.state.lastSearch}
+                    searched={this.state.searched} />
                 <Responsetable
-                    cercato={this.state.cercato}
-                    cards={this.state.cards} />
+                    searched={this.state.searched}
+                    cards={this.state.cards}
+                    found={this.state.found} />
             </div>
         );
     }

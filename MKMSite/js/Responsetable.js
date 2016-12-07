@@ -11,9 +11,43 @@ export default class Responsetable extends Component {
 
     render() {
 
-        if (this.props.cercato === false)
-            return false;
+        if (!this.props.searched && !this.props.found)
+            return null;
 
+        if (!this.props.searched && this.props.found)
+            return (
+            <div className="resoults-container">
+                <div className="row">
+                    Ho bisogno di almeno una carta da cercare.
+                </div>
+            </div>
+            );
+
+        if(this.props.searched && !this.props.found) {
+            return(
+                <div className="resoults-container">
+                    <div className="row">
+                        Mi dispiace, non riesco a trovare una o più carte.
+                    </div>
+                </div>
+            );
+        }
+
+        var rows = this.props.cards.map(el => {
+            return (
+            <div className="row">
+                <div className="grid-cell">
+                    {el.names[0]} - {el.expansion}
+                </div>
+                <div className="grid-cell">
+                    {el.prices.LOWEX}
+                </div>
+                <div className="grid-cell">
+                    {el.prices.TREND}
+                </div>
+            </div>
+           );
+        });
 
         return (
             <div className="resoults-container">
@@ -22,22 +56,13 @@ export default class Responsetable extends Component {
                         Titolo della carta
                     </div>
                     <div className="grid-cell">
-                        Prezzo minimo
+                        Prezzo minimo (€)
                     </div>
                     <div className="grid-cell">
-                        Prezzo medio
+                        Prezzo di tendenza (€)
                     </div>
                 </div>
-                <div className="row">
-                    <div className="grid-cell">
-                        {this.props.cards[0].name}
-                    </div>
-                    <div className="grid-cell">
-                        {this.props.cards[0].price}
-                    </div>
-                    <div className="grid-cell">
-                    </div>
-                </div>
+                {rows}
             </div>
         );
     };
