@@ -31,10 +31,42 @@ button[type=submit] {
     }
 }
 
+button[type=card] {
+    height: 50px;
+    padding: 0 20px;
+    border: solid 1px #ccc;
+    border-bottom: 0;
+    background-color: #3D5760;
+    cursor: pointer;
+    color: #fff;
+    font-size: 1rem;
+
+    &:hover {
+        background-color: #1F2C30;
+    }
+
+    &:first-of-type {
+        border-top-right-radius: 6px;
+        border-top-left-radius: 6px;
+    }
+
+    &:last-of-type {
+        border-bottom: solid 1px #ccc;
+        border-bottom-right-radius: 6px;
+        border-bottom-left-radius: 6px;
+    }
+}
+
 .stringa-cercata {
     display: none;
 
     &.visible {
         display: block;
     }
+}
+
+.card-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
 }

@@ -14,7 +14,7 @@ export default class Responsetable extends Component {
         if (!this.props.searched && !this.props.found)
             return null;
 
-        if (!this.props.searched && this.props.found)
+        if (this.props.lastSearch === '')
             return (
             <div className="resoults-container">
                 <div className="row">

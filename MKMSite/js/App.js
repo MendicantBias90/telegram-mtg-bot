@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Requestform from './Requestform';
 import Responsetable from './Responsetable';
+import CardsList from './CardsList';
 
 export default class App extends Component {
 
@@ -11,6 +12,8 @@ export default class App extends Component {
             searched: false,
             found: false,
             lastSearch: '',
+            cardList: [],
+            listVisible: false,
             cards: [],
         };
     }
@@ -34,23 +37,57 @@ export default class App extends Component {
             });
         })
         .then(data => {
-            console.log('Data');
-            console.log(data);
+            var names = [];
+            data.forEach(function(el) {
+                var singleName = el.names[0].replace(/\s\(Version\s\d+\)/, '');
 
+                if(names.indexOf(singleName) === -1)
+                    names.push(singleName);
+            });
+            return names;
+        })
+        .then(data => {
             this.setState({
-                cards: data,
-                found: true,
-                searched: !data.message,
+                cardList: data,
+                listVisible: true,
+                searched: false,
+                found: false,
             });
         })
         .catch((e) => {
-            console.log('Yep, an error occourred');
-            console.log(e);
+            this.setState({
+                listVisible: false,
+                searched: true,
+                found: false,
+            });
+        });
+    }
+
+    handleClick(card) {
+        fetch(`http://localhost:3002/price?name=${card.trim()}`)
+        .then(response => {
+            return response.json();
+        })
+        .then(res => {
+            var results = res.filter(el => el.names[0] === card);
+            return results;
+        })
+        .then(data => {
+            this.setState({
+                listVisible: true,
+                cards: data,
+                found: true,
+                searched: true,
+                lastSearch: card,
+            });
+        })
+        .catch((e) => {
             this.setState({
                 found: false,
                 searched: true,
             });
         });
+
     }
 
     render() {
@@ -64,10 +101,15 @@ export default class App extends Component {
                     onSearch={(stringa) => this.onSearch(stringa)}
                     lastSearch={this.state.lastSearch}
                     searched={this.state.searched} />
+                <CardsList
+                    cards={this.state.cardList}
+                    listVisible={this.state.listVisible}
+                    onClick={(card) => this.handleClick(card)} />
                 <Responsetable
                     searched={this.state.searched}
                     cards={this.state.cards}
-                    found={this.state.found} />
+                    found={this.state.found}
+                    lastSearch={this.state.lastSearch} />
             </div>
         );
     }
