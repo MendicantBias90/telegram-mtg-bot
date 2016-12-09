@@ -19,10 +19,6 @@ export default class App extends Component {
     }
 
     onSearch(string) {
-        this.setState({
-            lastSearch: string,
-        });
-
         var promises = string.split(',').map(el => {
             return fetch(`http://localhost:3002/price?name=${el.trim()}`)
                 .then(response => {
@@ -59,6 +55,7 @@ export default class App extends Component {
                 listVisible: false,
                 searched: true,
                 found: false,
+                lastSearch: string,
             });
         });
     }
