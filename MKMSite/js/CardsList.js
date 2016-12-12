@@ -15,9 +15,6 @@ export default class CardsList extends Component {
             );
         });
 
-        if(!this.props.listVisible)
-            return null;
-
         return (
                 <div>
                     <p>Quale carta stai cercando?</p>

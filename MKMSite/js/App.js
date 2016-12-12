@@ -98,10 +98,11 @@ export default class App extends Component {
                     onSearch={(stringa) => this.onSearch(stringa)}
                     lastSearch={this.state.lastSearch}
                     searched={this.state.searched} />
-                <CardsList
-                    cards={this.state.cardList}
-                    listVisible={this.state.listVisible}
-                    onClick={(card) => this.handleClick(card)} />
+                {this.state.listVisible &&
+                    <CardsList
+                        cards={this.state.cardList}
+                        onClick={(card) => this.handleClick(card)} />
+                }
                 <Responsetable
                     searched={this.state.searched}
                     cards={this.state.cards}
