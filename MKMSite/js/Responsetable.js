@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import ReactDOM from 'react-dom';
 
 export default class Responsetable extends Component {
     constructor(props) {
@@ -8,6 +9,13 @@ export default class Responsetable extends Component {
 
         };
     };
+
+    componentDidUpdate() {
+        var node = ReactDOM.findDOMNode(this);
+        if(node) {
+            node.scrollIntoView({block: 'start', behavior: 'smooth'});
+        }
+    }
 
     render() {
 
