@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Requestform from './Requestform';
 import Responsetable from './Responsetable';
 import CardsList from './CardsList';
+import Loader from 'react-loader';
 
 export default class App extends Component {
 
@@ -15,10 +16,15 @@ export default class App extends Component {
             cardList: [],
             listVisible: false,
             cards: [],
+            loaded: true,
         };
     }
 
     onSearch(string) {
+        this.setState({
+            loaded: false,
+        });
+
         var promises = string.split(',').map(el => {
             return fetch(`http://localhost:3002/price?name=${el.trim()}`)
                 .then(response => {
@@ -48,6 +54,7 @@ export default class App extends Component {
                 listVisible: true,
                 searched: false,
                 found: false,
+                loaded: true,
             });
         })
         .catch((e) => {
@@ -56,6 +63,7 @@ export default class App extends Component {
                 searched: true,
                 found: false,
                 lastSearch: string,
+                loaded: true,
             });
         });
     }
@@ -88,6 +96,29 @@ export default class App extends Component {
     }
 
     render() {
+        var options = {
+            lines: 13,
+            length: 20,
+            width: 10,
+            radius: 30,
+            scale: 0.25,
+            corners: 1,
+            color: '#3D5760',
+            opacity: 0.25,
+            rotate: 0,
+            direction: 1,
+            speed: 2,
+            trail: 60,
+            fps: 20,
+            zIndex: 2e9,
+            top: '50%',
+            left: '50%',
+            shadow: false,
+            hwaccel: true,
+            position: 'absolute'
+        };
+
+
         return (
             <div className="container">
                 <div className="jumbotron">
@@ -98,16 +129,20 @@ export default class App extends Component {
                     onSearch={(stringa) => this.onSearch(stringa)}
                     lastSearch={this.state.lastSearch}
                     searched={this.state.searched} />
-                {this.state.listVisible &&
-                    <CardsList
-                        cards={this.state.cardList}
-                        onClick={(card) => this.handleClick(card)} />
-                }
-                <Responsetable
-                    searched={this.state.searched}
-                    cards={this.state.cards}
-                    found={this.state.found}
-                    lastSearch={this.state.lastSearch} />
+                <div className="container">
+                    <Loader loaded={this.state.loaded} options={options}>
+                        {this.state.listVisible &&
+                            <CardsList
+                                cards={this.state.cardList}
+                                onClick={(card) => this.handleClick(card)} />
+                        }
+                        <Responsetable
+                            searched={this.state.searched}
+                            cards={this.state.cards}
+                            found={this.state.found}
+                            lastSearch={this.state.lastSearch} />
+                    </Loader>
+                </div>
             </div>
         );
     }
