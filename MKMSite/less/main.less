@@ -1,3 +1,4 @@
+@smartphone: ~"screen and (max-device-width: 480px)";
 @import 'https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700';
 @import "search.less";
 @import "resoults.less";
@@ -10,9 +11,19 @@ body {
     font-family: 'Roboto Condensed', sans-serif;
 }
 
+
 .container {
     max-width: 600px;
     margin: 0 auto;
     text-align: center;
     position: relative;
+    padding: 10px 0 10px 0;
+
+    @media @smartphone {
+        width: 100%;
+        max-width: 100%;
+        font-size: 1.4em;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 }

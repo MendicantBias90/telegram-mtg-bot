@@ -12,6 +12,12 @@ input[type=text] {
     margin-right: 2px;
     font-size: 1rem;
     outline: none;
+    @media @smartphone {
+        height: 100px;
+        width: 70%;
+        max-width: 100%;
+        font-size: 1.6rem;
+    }
 }
 
 button[type=submit] {
@@ -28,6 +34,11 @@ button[type=submit] {
 
     &:hover {
         background-color: #1F2C30;
+    }
+
+    @media @smartphone {
+        height: 100px;
+        font-size: 1.6rem;
     }
 }
 
@@ -55,6 +66,11 @@ button[type=card] {
         border-bottom-right-radius: 6px;
         border-bottom-left-radius: 6px;
     }
+
+    @media @smartphone {
+        height: 100px;
+        font-size: 1.8rem;
+    }
 }
 
 .stringa-cercata {
@@ -69,4 +85,10 @@ button[type=card] {
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
+
+    @media @smartphone {
+        width: 100%;
+        max-width: 100%;
+        font-size: 1.6rem;
+    }
 }
