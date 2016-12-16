@@ -30,7 +30,7 @@ export default class Requestform extends Component {
                 <p>Puoi cercare più di una carta, separa i nomi con una virgola.</p>
                 <input type="text" value={this.state.cards} placeholder="" onChange={(e) => this.onChangeCards(e)}></input>
                 <button type="submit" onClick={(e) => this.onSubmit(e)}>Cerca i prezzi</button>
-                <p className={'stringa-cercata ' + (this.props.searched ? 'visible' : '')}>Ultima ricerca: {this.props.lastSearch}</p>
+                <p className={'stringa-cercata ' + (this.props.searched && this.props.lastSearch !== '' ? 'visible' : '')}>Ultima ricerca: {this.props.lastSearch}</p>
             </div>
         );
     };
