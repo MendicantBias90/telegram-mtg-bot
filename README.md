@@ -8,7 +8,7 @@ The project aim is to make a Telegram BOT which can easily retrieve [_Magic: The
 ## Commands
 
 #### /price _card_[, _card_]*
-Bot should return the prices for the first 10 cards that match _card_ parameter. It can search multiple cards if comma-separated
+Bot return the prices for the cards that match _card_ parameter. It can search multiple cards if comma-separated.  The prices shown are the lowest price for card (condition EX+) and the trend price.
 
 Example:
 ```
@@ -16,20 +16,25 @@ Example:
 /price snapcaster, izzet staticaster
 
 # BOT:
-Snapcaster Mage     INN     € 35.50 | € 44.34
-Snapcaster Mage     DCI     € 78.50 | € 76.42
----------------------------------------------
-Izzet Staticaster   RTR     €  0.02 | €  0.18
+Snapcaster Mage - INN - 35.50 | 39.72 €
+Snapcaster Mage - DCI - 69.99 | 78.50 €
+
+Izzet Staticaster - RTR - 0.02 | 0.20 €
 ```
+
+#### /last
+Bot return the last 10 _card_ searched.
+
+
+## Inline query
+User can interact with bot from any chat via inline query. Just type `@mkmpricebot` followed by a card name, to retrieve a list of direct links to [_MagicCardMarket_](https://www.magiccardmarket.eu) 's card page.  
+
 
 ## The architecture
 The system will be based on multiple services orchestrating by [Docker](https://www.docker.com/).
 
 #### Telegram service
 It should provide integration with Telegram, receving chat's commands and translating them into internal calls.
-
-#### BOT Price service
-It should provide REST API to handle price requests from external services. It should decide what price-provider should be contacted.
 
 #### MKM api service
 It should provide REST API to find cards prices into MKM.
